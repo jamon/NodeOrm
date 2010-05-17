@@ -14,11 +14,21 @@ var Person = Orm
     });
 
 /* Two */
+
+
+var PersonGroup = Orm
+    .new("PersonGroup")
+    .manyToOne("Person", "personId")
+    .manyToOne("Group", "groupId");
+
 var Person = Orm
     .new("Person")
     .int("id").index().primaryKey()
     .oneToMany("EmailAddress", "personId")
     .manyToOne("UserType", "userType")
+    .manyToMany(PersonGroup)  // option 1
+    .manyToMany(Orm.new("PersonGroup").manyToOne("Person", "personId").manyToOne("Group", "groupId")) // option 2
+    .manyToMany("Group")  // option 3
     .string("firstName")
     .string("lastName")
     .serializedFields()
