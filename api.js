@@ -42,12 +42,27 @@ rest
     .method("POST")
     .as(function(req, resource, obj) {
         Person.find(req.pathParam("id"))
-            .getTransaction(function(person, version) { // transactioned work
+            .getTransaction(function(person) { // transactioned work
                 person.setFirstName(obj.firstName);
             }, function(person) {  // success
                 resource.ok(person);
             });
     });
+
+
+/* Multi Object Transaction */
+
+var p = Person.find(1);
+var pp = Person.find(2);
+
+Orm.getTransaction([p, pp]), function(p, pp) {
+    p.setFirstName("Foo");
+    pp.setFirstName("Bar");
+}, function(p, pp) {
+    // successfully completed updates of both objects
+}, function(error, p, pp) {
+    // transaction error!
+);
 
 
 /*** DEPRECATED ***/
