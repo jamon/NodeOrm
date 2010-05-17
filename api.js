@@ -64,6 +64,12 @@ Orm.getTransaction([p, pp]), function(p, pp) {
     // transaction error!
 );
 
+/* REST Integration example */
+var rest = require('./lib/rest');
+var Orm = require('./lib/Orm');
+Orm.setRest(rest);
+Orm.rest.crud(Person, "/person");
+
 
 /*** DEPRECATED ***/
 /* One */
