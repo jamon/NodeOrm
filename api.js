@@ -1,18 +1,5 @@
 /* API Examples */
 
-/* One */
-var Person = Orm
-    .new("Person")
-    .field("id", Orm.INTEGER).index("id").primaryKey("id")
-    .field("firstName", Orm.STRING)
-    .field("lastName", Orm.STRING)
-    .oneToMany("EmailAddress", "personId")
-    .field("userType").manyToOne("UserType", "userType")
-    .serializedFields({
-        "birthDay": Orm.DATE,
-        "favoriteBook": Orm.STRING
-    });
-
 /* Two */
 var Group = Orm
     .new("Group")
@@ -48,6 +35,34 @@ myPerson
     .addEmailAddress("someemail@jamonterrell.com")
     .setUserType(UserType.find(4))
     .addGroup(Group.find(6));
+
+/* Example with REST.js */
+rest
+    .path("/person/{id}")
+    .method("POST")
+    .as(function(req, resource, obj) {
+        Person.find(req.pathParam("id"))
+            .getTransaction(function(person, version) { // transactioned work
+                person.setFirstName(obj.firstName);
+            }, function(person) {  // success
+                resource.ok(person);
+            });
+    });
+
+
+/*** DEPRECATED ***/
+/* One */
+var Person = Orm
+    .new("Person")
+    .field("id", Orm.INTEGER).index("id").primaryKey("id")
+    .field("firstName", Orm.STRING)
+    .field("lastName", Orm.STRING)
+    .oneToMany("EmailAddress", "personId")
+    .field("userType").manyToOne("UserType", "userType")
+    .serializedFields({
+        "birthDay": Orm.DATE,
+        "favoriteBook": Orm.STRING
+    });
 
 /* Three */
 
