@@ -35,6 +35,17 @@ var Person = Orm
         .date("birthDay")
         .string("favoriteBook");
 
+var myPerson = new Person();
+myPerson
+    .setId(12)
+    .setFirstName("Jamon")
+    .setLastName("Terrell")
+    .setBirthDay(new Date())
+    .setFavoriteBook("The Hitchhiker's Guide to the Galaxy")
+    .addEmailAddress("someemail@jamonterrell.com")
+    .setUserType(UserType.find(4))
+    .addGroup(Group.find(6));
+
 /* Three */
 
 var Person = Orm.new({
