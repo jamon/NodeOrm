@@ -14,7 +14,10 @@ var Person = Orm
     });
 
 /* Two */
-
+var Group = Orm
+    .new("Group")
+    .int("id").index().primaryKey()
+    .string("name");
 
 var PersonGroup = Orm
     .new("PersonGroup")
