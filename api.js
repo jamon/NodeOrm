@@ -68,7 +68,20 @@ Orm.getTransaction([p, pp]), function(p, pp) {
 var rest = require('./lib/rest');
 var Orm = require('./lib/Orm');
 Orm.setRest(rest);
-Orm.rest.crud(Person, "/person");
+Orm.rest.crud(Person, "/person", {
+    "delete": function(or, person) {
+        // check permissions or something here
+        or.go();
+    },
+    "create": function(or, person) {
+        // check permissions or something here
+        if(!Person.search({"firstName": person.getFirstName(), "lastName": person.getLastName()}).empty()) {
+            or.invalidRequest("Name already exists");
+        } else {
+            or.go();
+        }
+    }
+});
 
 
 /*** DEPRECATED ***/
